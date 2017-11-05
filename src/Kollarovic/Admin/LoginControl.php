@@ -1,14 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin;
 
 use Nette\Application\UI\Control;
+use Nette\Forms\Form;
 use Nette\Localization\ITranslator;
+use WebLoader\Nette\CssLoader;
+use WebLoader\Nette\JavaScriptLoader;
 
 
 class LoginControl extends Control
 {
-
 	/** @var array */
 	public $onLoggedIn;
 	
@@ -58,7 +61,7 @@ class LoginControl extends Control
 	private $translator;
 
 
-	function __construct(ILoginFormFactory $loginFormFactory, IResetFormFactory $resetFormFactory, ILoaderFactory $loaderFactory, ITranslator $translator = NULL)
+	function __construct(ILoginFormFactory $loginFormFactory, IResetFormFactory $resetFormFactory, ILoaderFactory $loaderFactory, ITranslator $translator = null)
 	{
 		parent::__construct();
 		$this->loginFormFactory = $loginFormFactory;
@@ -86,9 +89,9 @@ class LoginControl extends Control
 	}
 
 
-	protected function createTemplate($class = NULL)
+	protected function createTemplate()
 	{
-		$template = parent::createTemplate($class);
+		$template = parent::createTemplate();
 		if (!array_key_exists('translate', $template->getLatte()->getFilters())) {
 			$template->addFilter('translate', function($str){return $str;});
 		}
@@ -96,7 +99,7 @@ class LoginControl extends Control
 	}
 
 
-	protected function createComponentForm()
+	protected function createComponentForm(): Form
 	{
 		$form = $this->loginFormFactory->create();
 		$form->onSuccess[] = function($form) {
@@ -106,7 +109,7 @@ class LoginControl extends Control
 	}
 	
 	
-	protected function createComponentFormReset()
+	protected function createComponentFormReset(): Form
 	{
 		$form = $this->resetFormFactory->create();
 		$form->onSuccess[] = function($form) {
@@ -116,53 +119,21 @@ class LoginControl extends Control
 	}
 
 
-	protected function createComponentCss()
+	protected function createComponentCss(): CssLoader
 	{
 		return $this->loaderFactory->createCssLoader();
 	}
 
 
-	protected function createComponentJs()
+	protected function createComponentJs(): JavaScriptLoader
 	{
 		return $this->loaderFactory->createJavaScriptLoader();
 	}
 
 	/**
-	 * @return array
-	 */
-	public function getOnLoggedIn()
-	{
-		return $this->onLoggedIn;
-	}
-
-	/**
-	 * @param array $onLoggedIn
-	 */
-	public function setOnLoggedIn($onLoggedIn)
-	{
-		$this->onLoggedIn = $onLoggedIn;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getOnResetPassword()
-	{
-		return $this->onResetPassword;
-	}
-
-	/**
-	 * @param array $onResetPassword
-	 */
-	public function setOnResetPassword($onResetPassword)
-	{
-		$this->onResetPassword = $onResetPassword;
-	}
-
-	/**
 	 * @return ILoginFormFactory
 	 */
-	public function getLoginFormFactory()
+	public function getLoginFormFactory(): ILoginFormFactory
 	{
 		return $this->loginFormFactory;
 	}
@@ -170,7 +141,7 @@ class LoginControl extends Control
 	/**
 	 * @param ILoginFormFactory $loginFormFactory
 	 */
-	public function setLoginFormFactory($loginFormFactory)
+	public function setLoginFormFactory(ILoginFormFactory $loginFormFactory)
 	{
 		$this->loginFormFactory = $loginFormFactory;
 	}
@@ -178,7 +149,7 @@ class LoginControl extends Control
 	/**
 	 * @return IResetFormFactory
 	 */
-	public function getResetFormFactory()
+	public function getResetFormFactory(): IResetFormFactory
 	{
 		return $this->resetFormFactory;
 	}
@@ -186,7 +157,7 @@ class LoginControl extends Control
 	/**
 	 * @param IResetFormFactory $resetFormFactory
 	 */
-	public function setResetFormFactory($resetFormFactory)
+	public function setResetFormFactory(IResetFormFactory $resetFormFactory)
 	{
 		$this->resetFormFactory = $resetFormFactory;
 	}
@@ -194,7 +165,7 @@ class LoginControl extends Control
 	/**
 	 * @return ILoaderFactory
 	 */
-	public function getLoaderFactory()
+	public function getLoaderFactory(): ILoaderFactory
 	{
 		return $this->loaderFactory;
 	}
@@ -202,7 +173,7 @@ class LoginControl extends Control
 	/**
 	 * @param ILoaderFactory $loaderFactory
 	 */
-	public function setLoaderFactory($loaderFactory)
+	public function setLoaderFactory(ILoaderFactory $loaderFactory)
 	{
 		$this->loaderFactory = $loaderFactory;
 	}
@@ -210,7 +181,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getPageTitle()
+	public function getPageTitle(): string
 	{
 		return $this->pageTitle;
 	}
@@ -218,7 +189,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $pageTitle
 	 */
-	public function setPageTitle($pageTitle)
+	public function setPageTitle(string $pageTitle)
 	{
 		$this->pageTitle = $pageTitle;
 	}
@@ -226,7 +197,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getPageName()
+	public function getPageName(): string
 	{
 		return $this->pageName;
 	}
@@ -234,7 +205,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $pageName
 	 */
-	public function setPageName($pageName)
+	public function setPageName(string $pageName)
 	{
 		$this->pageName = $pageName;
 	}
@@ -242,7 +213,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getPageMsg()
+	public function getPageMsg(): string
 	{
 		return $this->pageMsg;
 	}
@@ -250,7 +221,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $pageMsg
 	 */
-	public function setPageMsg($pageMsg)
+	public function setPageMsg(string $pageMsg)
 	{
 		$this->pageMsg = $pageMsg;
 	}
@@ -258,7 +229,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getUsernameIcon()
+	public function getUsernameIcon(): string
 	{
 		return $this->usernameIcon;
 	}
@@ -266,7 +237,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $usernameIcon
 	 */
-	public function setUsernameIcon($usernameIcon)
+	public function setUsernameIcon(string $usernameIcon)
 	{
 		$this->usernameIcon = $usernameIcon;
 	}
@@ -274,7 +245,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getPasswordIcon()
+	public function getPasswordIcon(): string
 	{
 		return $this->passwordIcon;
 	}
@@ -282,7 +253,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $passwordIcon
 	 */
-	public function setPasswordIcon($passwordIcon)
+	public function setPasswordIcon(string $passwordIcon)
 	{
 		$this->passwordIcon = $passwordIcon;
 	}
@@ -290,7 +261,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getForgotPass()
+	public function getForgotPass(): string
 	{
 		return $this->forgotPass;
 	}
@@ -298,7 +269,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $forgotPass
 	 */
-	public function setForgotPass($forgotPass)
+	public function setForgotPass(string $forgotPass)
 	{
 		$this->forgotPass = $forgotPass;
 	}
@@ -306,7 +277,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getLogo()
+	public function getLogo(): string
 	{
 		return $this->logo;
 	}
@@ -314,7 +285,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $logo
 	 */
-	public function setLogo($logo)
+	public function setLogo(string $logo)
 	{
 		$this->logo = $logo;
 	}
@@ -322,7 +293,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getBg()
+	public function getBg(): string
 	{
 		return $this->bg;
 	}
@@ -330,7 +301,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $bg
 	 */
-	public function setBg($bg)
+	public function setBg(string $bg)
 	{
 		$this->bg = $bg;
 	}
@@ -338,7 +309,7 @@ class LoginControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getResetPassMsg()
+	public function getResetPassMsg(): string
 	{
 		return $this->resetPassMsg;
 	}
@@ -346,7 +317,7 @@ class LoginControl extends Control
 	/**
 	 * @param string $resetPassMsg
 	 */
-	public function setResetPassMsg($resetPassMsg)
+	public function setResetPassMsg(string $resetPassMsg)
 	{
 		$this->resetPassMsg = $resetPassMsg;
 	}
@@ -354,7 +325,7 @@ class LoginControl extends Control
 	/**
 	 * @return array
 	 */
-	public function getLayout()
+	public function getLayout(): array
 	{
 		return $this->layout;
 	}
@@ -362,7 +333,7 @@ class LoginControl extends Control
 	/**
 	 * @param array $layout
 	 */
-	public function setLayout($layout)
+	public function setLayout(array $layout)
 	{
 		$this->layout = $layout;
 	}
@@ -370,7 +341,7 @@ class LoginControl extends Control
 	/**
 	 * @return ITranslator
 	 */
-	public function getTranslator()
+	public function getTranslator(): ITranslator
 	{
 		return $this->translator;
 	}
@@ -378,9 +349,8 @@ class LoginControl extends Control
 	/**
 	 * @param ITranslator $translator
 	 */
-	public function setTranslator($translator)
+	public function setTranslator(ITranslator $translator)
 	{
 		$this->translator = $translator;
 	}
-
 }

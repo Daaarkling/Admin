@@ -1,18 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin;
 
+use Kollarovic\Navigation\Item;
 use Kollarovic\Navigation\ItemsFactory;
 use Kollarovic\Navigation\NavigationControl;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Nette\Security\User;
-
+use WebLoader\Nette\CssLoader;
+use WebLoader\Nette\JavaScriptLoader;
 
 
 class AdminControl extends Control
 {
-	
 	/** @var array */
 	public $onLoggedOut;
 
@@ -77,7 +79,7 @@ class AdminControl extends Control
 	private $profileUrl;
 
 	/** @var boolean */
-	private $ajaxRequest = FALSE;
+	private $ajaxRequest = false;
 	
 	/** @var boolean */
 	private $showSearch;
@@ -138,9 +140,9 @@ class AdminControl extends Control
 	}
 
 
-	protected function createTemplate($class = NULL)
+	protected function createTemplate()
 	{
-		$template = parent::createTemplate($class);
+		$template = parent::createTemplate();
 		if (!array_key_exists('translate', $template->getLatte()->getFilters())) {
 			$template->addFilter('translate', function($str){return $str;});
 		}
@@ -148,7 +150,7 @@ class AdminControl extends Control
 	}
 
 
-	protected function createComponentSearchForm()
+	protected function createComponentSearchForm(): Form
 	{
 		$form = new Form();
 		$form->addText('key');
@@ -159,73 +161,41 @@ class AdminControl extends Control
 	}
 
 
-	protected function createComponentCss()
+	protected function createComponentCss(): CssLoader
 	{
 		return $this->loaderFactory->createCssLoader();
 	}
 
 
-	protected function createComponentJs()
+	protected function createComponentJs(): JavaScriptLoader
 	{
 		return $this->loaderFactory->createJavaScriptLoader();
 	}
 
 
-	protected function createComponentNavigation()
+	protected function createComponentNavigation(): NavigationControl
 	{
 		return new NavigationControl($this->getRootItem(), $this->layout);
 	}
 
 
-	private function getRootItem()
+	private function getRootItem(): Item
 	{
 		return $this->itemsFactory->create($this->navigationName);
 	}
 
 	/**
-	 * @return array
+	 * @return ItemsFactory
 	 */
-	public function getOnLoggedOut()
-	{
-		return $this->onLoggedOut;
-	}
-
-	/**
-	 * @param array $onLoggedOut
-	 */
-	public function setOnLoggedOut($onLoggedOut)
-	{
-		$this->onLoggedOut = $onLoggedOut;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getOnSearch()
-	{
-		return $this->onSearch;
-	}
-
-	/**
-	 * @param array $onSearch
-	 */
-	public function setOnSearch($onSearch)
-	{
-		$this->onSearch = $onSearch;
-	}
-
-	/**
-	 * @return IItemsFactory
-	 */
-	public function getItemsFactory()
+	public function getItemsFactory(): ItemsFactory
 	{
 		return $this->itemsFactory;
 	}
 
 	/**
-	 * @param IItemsFactory $itemsFactory
+	 * @param ItemsFactory $itemsFactory
 	 */
-	public function setItemsFactory($itemsFactory)
+	public function setItemsFactory(ItemsFactory $itemsFactory)
 	{
 		$this->itemsFactory = $itemsFactory;
 	}
@@ -233,7 +203,7 @@ class AdminControl extends Control
 	/**
 	 * @return ILoaderFactory
 	 */
-	public function getLoaderFactory()
+	public function getLoaderFactory(): ILoaderFactory
 	{
 		return $this->loaderFactory;
 	}
@@ -241,7 +211,7 @@ class AdminControl extends Control
 	/**
 	 * @param ILoaderFactory $loaderFactory
 	 */
-	public function setLoaderFactory($loaderFactory)
+	public function setLoaderFactory(ILoaderFactory $loaderFactory)
 	{
 		$this->loaderFactory = $loaderFactory;
 	}
@@ -249,7 +219,7 @@ class AdminControl extends Control
 	/**
 	 * @return User
 	 */
-	public function getUser()
+	public function getUser(): User
 	{
 		return $this->user;
 	}
@@ -257,7 +227,7 @@ class AdminControl extends Control
 	/**
 	 * @param User $user
 	 */
-	public function setUser($user)
+	public function setUser(User $user)
 	{
 		$this->user = $user;
 	}
@@ -265,7 +235,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getPageTitle()
+	public function getPageTitle(): string
 	{
 		return $this->pageTitle;
 	}
@@ -273,7 +243,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $pageTitle
 	 */
-	public function setPageTitle($pageTitle)
+	public function setPageTitle(string $pageTitle)
 	{
 		$this->pageTitle = $pageTitle;
 	}
@@ -281,7 +251,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getSkin()
+	public function getSkin(): string
 	{
 		return $this->skin;
 	}
@@ -289,7 +259,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $skin
 	 */
-	public function setSkin($skin)
+	public function setSkin(string $skin)
 	{
 		$this->skin = $skin;
 	}
@@ -297,7 +267,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getLogo()
+	public function getLogo(): string
 	{
 		return $this->logo;
 	}
@@ -305,7 +275,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $logo
 	 */
-	public function setLogo($logo)
+	public function setLogo(string $logo)
 	{
 		$this->logo = $logo;
 	}
@@ -313,7 +283,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getAdminName()
+	public function getAdminName(): string
 	{
 		return $this->adminName;
 	}
@@ -321,7 +291,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $adminName
 	 */
-	public function setAdminName($adminName)
+	public function setAdminName(string $adminName)
 	{
 		$this->adminName = $adminName;
 	}
@@ -329,7 +299,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getUserName()
+	public function getUserName(): string
 	{
 		return $this->userName;
 	}
@@ -337,7 +307,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $userName
 	 */
-	public function setUserName($userName)
+	public function setUserName(string $userName)
 	{
 		$this->userName = $userName;
 	}
@@ -345,7 +315,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getUserImage()
+	public function getUserImage(): string
 	{
 		return $this->userImage;
 	}
@@ -353,7 +323,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $userImage
 	 */
-	public function setUserImage($userImage)
+	public function setUserImage(string $userImage)
 	{
 		$this->userImage = $userImage;
 	}
@@ -361,7 +331,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getPageName()
+	public function getPageName(): string
 	{
 		return $this->pageName;
 	}
@@ -369,7 +339,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $pageName
 	 */
-	public function setPageName($pageName)
+	public function setPageName(string $pageName)
 	{
 		$this->pageName = $pageName;
 	}
@@ -377,7 +347,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getContent()
+	public function getContent(): string
 	{
 		return $this->content;
 	}
@@ -385,7 +355,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $content
 	 */
-	public function setContent($content)
+	public function setContent(string $content)
 	{
 		$this->content = $content;
 	}
@@ -393,7 +363,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getHeader()
+	public function getHeader(): string
 	{
 		return $this->header;
 	}
@@ -401,7 +371,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $header
 	 */
-	public function setHeader($header)
+	public function setHeader(string $header)
 	{
 		$this->header = $header;
 	}
@@ -409,7 +379,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getFooter()
+	public function getFooter(): string
 	{
 		return $this->footer;
 	}
@@ -417,7 +387,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $footer
 	 */
-	public function setFooter($footer)
+	public function setFooter(string $footer)
 	{
 		$this->footer = $footer;
 	}
@@ -425,7 +395,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getProfile()
+	public function getProfile(): string
 	{
 		return $this->profile;
 	}
@@ -433,7 +403,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $profile
 	 */
-	public function setProfile($profile)
+	public function setProfile(string $profile)
 	{
 		$this->profile = $profile;
 	}
@@ -441,7 +411,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getSignOut()
+	public function getSignOut(): string
 	{
 		return $this->signOut;
 	}
@@ -449,7 +419,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $signOut
 	 */
-	public function setSignOut($signOut)
+	public function setSignOut(string $signOut)
 	{
 		$this->signOut = $signOut;
 	}
@@ -457,7 +427,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getSearch()
+	public function getSearch(): string
 	{
 		return $this->search;
 	}
@@ -465,7 +435,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $search
 	 */
-	public function setSearch($search)
+	public function setSearch(string $search)
 	{
 		$this->search = $search;
 	}
@@ -473,7 +443,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getNavbar()
+	public function getNavbar(): string
 	{
 		return $this->navbar;
 	}
@@ -481,7 +451,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $navbar
 	 */
-	public function setNavbar($navbar)
+	public function setNavbar(string $navbar)
 	{
 		$this->navbar = $navbar;
 	}
@@ -489,7 +459,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getNavigationName()
+	public function getNavigationName(): string
 	{
 		return $this->navigationName;
 	}
@@ -497,7 +467,7 @@ class AdminControl extends Control
 	/**
 	 * @param string $navigationName
 	 */
-	public function setNavigationName($navigationName)
+	public function setNavigationName(string $navigationName)
 	{
 		$this->navigationName = $navigationName;
 	}
@@ -505,7 +475,7 @@ class AdminControl extends Control
 	/**
 	 * @return string
 	 */
-	public function getProfileUrl()
+	public function getProfileUrl(): string
 	{
 		return $this->profileUrl;
 	}
@@ -513,39 +483,39 @@ class AdminControl extends Control
 	/**
 	 * @param string $profileUrl
 	 */
-	public function setProfileUrl($profileUrl)
+	public function setProfileUrl(string $profileUrl)
 	{
 		$this->profileUrl = $profileUrl;
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isAjaxRequest()
+	public function isAjaxRequest(): bool
 	{
 		return $this->ajaxRequest;
 	}
 
 	/**
-	 * @param boolean $ajaxRequest
+	 * @param bool $ajaxRequest
 	 */
-	public function setAjaxRequest($ajaxRequest)
+	public function setAjaxRequest(bool $ajaxRequest)
 	{
 		$this->ajaxRequest = $ajaxRequest;
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isShowSearch()
+	public function isShowSearch(): bool
 	{
 		return $this->showSearch;
 	}
 
 	/**
-	 * @param boolean $showSearch
+	 * @param bool $showSearch
 	 */
-	public function setShowSearch($showSearch)
+	public function setShowSearch(bool $showSearch)
 	{
 		$this->showSearch = $showSearch;
 	}
@@ -553,7 +523,7 @@ class AdminControl extends Control
 	/**
 	 * @return array
 	 */
-	public function getLayout()
+	public function getLayout(): array
 	{
 		return $this->layout;
 	}
@@ -561,13 +531,8 @@ class AdminControl extends Control
 	/**
 	 * @param array $layout
 	 */
-	public function setLayout($layout)
+	public function setLayout(array $layout)
 	{
 		$this->layout = $layout;
 	}
-
-
-
-
-
 }

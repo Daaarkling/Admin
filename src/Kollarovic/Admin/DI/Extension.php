@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin\DI;
 
@@ -11,14 +12,14 @@ class Extension extends Nette\DI\CompilerExtension {
 		return [
 			'wwwDir' => '%wwwDir%',
 			'name' => 'Admin',
-			'logo' => NULL,
+			'logo' => null,
 			'skin' => 'red',
 			'footer' => '',
 			'profile' => 'Profile',
 			'signout' => 'Sign Out',
 			'search' => 'Search',
-			'ajax' => FALSE,
-			'showSearch' => TRUE,
+			'ajax' => false,
+			'showSearch' => true,
 			'layout' => 'AdminLTE',
 			'files' => [],
 			'navigation' => 'admin',
@@ -41,26 +42,26 @@ class Extension extends Nette\DI\CompilerExtension {
 		$builder = $this->getContainerBuilder();
 
 		$loaderFactory = $builder->addDefinition($this->prefix('loaderFactory'))
-				->setClass('Kollarovic\Admin\LoaderFactory', ['wwwDir' => $config['wwwDir']]);
+				->setFactory('Kollarovic\Admin\LoaderFactory', ['wwwDir' => $config['wwwDir']]);
 
 		foreach (array_merge($this->getCoreFiles(), $this->getLayout($config['layout'])['files'], $config['files']) as $file) {
 			$loaderFactory->addSetup('addFile', [$file]);
 		}
 
 		$builder->addDefinition($this->prefix('formRender'))
-				->setClass('Tomaj\Form\Renderer\BootstrapRenderer')
-				->setAutowired(FALSE);
+				->setFactory('Tomaj\Form\Renderer\BootstrapRenderer')
+				->setAutowired(false);
 		
 		$builder->addDefinition($this->prefix('baseFormFactory'))
-				->setClass('Kollarovic\Admin\Form\BaseFormFactory', [
+				->setFactory('Kollarovic\Admin\Form\BaseFormFactory', [
 					'formRender' => $this->prefix('@formRender')
 		]);
 
 		$builder->addDefinition($this->prefix('loginFormFactory'))
-				->setClass('Kollarovic\Admin\LoginFormFactory');
+				->setFactory('Kollarovic\Admin\LoginFormFactory');
 		
 		$builder->addDefinition($this->prefix('resetFormFactory'))
-				->setClass('Kollarovic\Admin\ResetFormFactory');
+				->setFactory('Kollarovic\Admin\ResetFormFactory');
 
 		$builder->addDefinition($this->prefix('loginControlFactory'))
 				->setImplement('Kollarovic\Admin\ILoginControlFactory')
@@ -147,11 +148,11 @@ class Extension extends Nette\DI\CompilerExtension {
 		$dirA = dirname(__DIR__) . '/assets';
 		
 		return [
-				'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css',
-				'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css',
+				'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+				'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
 				'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js',
-				'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js',				
-				"https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css",
+				'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
+				"https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.min.css",
 				"https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.4.5/jquery-ui-timepicker-addon.min.css",
 				"https://code.jquery.com/ui/1.11.4/jquery-ui.min.js",
 				"https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.4.5/jquery-ui-timepicker-addon.min.js",
@@ -167,6 +168,8 @@ class Extension extends Nette\DI\CompilerExtension {
 				"$dirA/jasny-fileinput/jasny-fileinput.auto.min.js",
 				"$dirA/jasny-fileinput/jasny-fileinput.min.js",
 				"$dirA/jasny-fileinput/jasny-fileinput.min.css",
+				"$dirA/pace/pace.min.css",
+				"$dirA/pace/pace.min.js",
 				"$dirA/admin.js",
 			];
 	}

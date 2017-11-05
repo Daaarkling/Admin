@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin;
 
-use Nette\Object;
 use Nette\Http\IRequest;
 use Nette\SmartObject;
 use WebLoader\Compiler;
@@ -34,7 +34,7 @@ class LoaderFactory implements ILoaderFactory
 	/** @var array */
 	private $files = [];
 
-	function __construct($wwwDir, IRequest $httpRequest)
+	function __construct(string $wwwDir, IRequest $httpRequest)
 	{
 		$this->wwwDir = $wwwDir;
 		$this->httpRequest = $httpRequest;
@@ -42,40 +42,40 @@ class LoaderFactory implements ILoaderFactory
 	}
 
 
-	public function addFile($file)
+	public function addFile(string $file): LoaderFactory
 	{
 		$this->files[$file] = $file;
 		return $this;
 	}
 
 
-	public function removeFile($file)
+	public function removeFile(string $file): LoaderFactory
 	{
 		unset($this->cssFiles[$file]);
 		return $this;
 	}
 
 
-	public function createCssLoader()
+	public function createCssLoader(): CssLoader
 	{
 		$fileCollection = $this->createFileCollection(array_filter($this->files, [$this, 'isCss']));
 		$compiler = Compiler::createCssCompiler($fileCollection, $this->wwwDir . '/' . $this->outputDir);
 		$compiler->addFilter(new \Joseki\Webloader\CssMinFilter());
 		$compiler->addFileFilter(new \WebLoader\Nette\CssUrlFilter($this->wwwDir . '/', $this->httpRequest));
-		return new CssLoader($compiler, $this->httpRequest->url->basePath . $this->outputDir);
+		return new CssLoader($compiler, $this->httpRequest->getUrl()->getBasePath() . $this->outputDir);
 	}
 
 
-	public function createJavaScriptLoader()
+	public function createJavaScriptLoader(): JavaScriptLoader
 	{
 		$fileCollection = $this->createFileCollection(array_filter($this->files, [$this, 'isJs']));
 		$compiler = Compiler::createJsCompiler($fileCollection, $this->wwwDir . '/' . $this->outputDir);
 		$compiler->addFilter(new \Joseki\Webloader\JsMinFilter());
-		return new JavaScriptLoader($compiler, $this->httpRequest->url->basePath . $this->outputDir);
+		return new JavaScriptLoader($compiler, $this->httpRequest->getUrl()->getBasePath() . $this->outputDir);
 	}
 
 
-	private function createFileCollection(array $files)
+	private function createFileCollection(array $files): FileCollection
 	{
 		$fileCollection = new FileCollection($this->root);
 		foreach($files as $file) {
@@ -89,7 +89,7 @@ class LoaderFactory implements ILoaderFactory
 	}
 
 
-	private function isRemoteFile($file)
+	private function isRemoteFile($file): bool
 	{
 		return (filter_var($file, FILTER_VALIDATE_URL) or strpos($file, '//') === 0);
 	}
@@ -109,7 +109,55 @@ class LoaderFactory implements ILoaderFactory
 	/**
 	 * @return string
 	 */
-	public function getOutputDir()
+	public function getWwwDir(): string
+	{
+		return $this->wwwDir;
+	}
+
+	/**
+	 * @param string $wwwDir
+	 */
+	public function setWwwDir(string $wwwDir)
+	{
+		$this->wwwDir = $wwwDir;
+	}
+
+	/**
+	 * @return IRequest
+	 */
+	public function getHttpRequest(): IRequest
+	{
+		return $this->httpRequest;
+	}
+
+	/**
+	 * @param IRequest $httpRequest
+	 */
+	public function setHttpRequest(IRequest $httpRequest)
+	{
+		$this->httpRequest = $httpRequest;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getCssFiles(): array
+	{
+		return $this->cssFiles;
+	}
+
+	/**
+	 * @param array $cssFiles
+	 */
+	public function setCssFiles(array $cssFiles)
+	{
+		$this->cssFiles = $cssFiles;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getOutputDir(): string
 	{
 		return $this->outputDir;
 	}
@@ -117,7 +165,7 @@ class LoaderFactory implements ILoaderFactory
 	/**
 	 * @param string $outputDir
 	 */
-	public function setOutputDir($outputDir)
+	public function setOutputDir(string $outputDir)
 	{
 		$this->outputDir = $outputDir;
 	}
@@ -125,7 +173,7 @@ class LoaderFactory implements ILoaderFactory
 	/**
 	 * @return string
 	 */
-	public function getRoot()
+	public function getRoot(): string
 	{
 		return $this->root;
 	}
@@ -133,7 +181,7 @@ class LoaderFactory implements ILoaderFactory
 	/**
 	 * @param string $root
 	 */
-	public function setRoot($root)
+	public function setRoot(string $root)
 	{
 		$this->root = $root;
 	}
@@ -141,7 +189,7 @@ class LoaderFactory implements ILoaderFactory
 	/**
 	 * @return array
 	 */
-	public function getFiles()
+	public function getFiles(): array
 	{
 		return $this->files;
 	}
@@ -149,7 +197,7 @@ class LoaderFactory implements ILoaderFactory
 	/**
 	 * @param array $files
 	 */
-	public function setFiles($files)
+	public function setFiles(array $files)
 	{
 		$this->files = $files;
 	}

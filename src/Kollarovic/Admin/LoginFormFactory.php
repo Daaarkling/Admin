@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin;
 
-use Nette\Object;
 use Nette\Security\User;
 use Nette\Security\AuthenticationException;
 use Kollarovic\Admin\Form\IBaseFormFactory;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
 use Nette\SmartObject;
+use Nette\Utils\ArrayHash;
 
 class LoginFormFactory implements ILoginFormFactory {
 
@@ -30,7 +31,8 @@ class LoginFormFactory implements ILoginFormFactory {
 		$this->translator = $baseFormFactory->getTranslator();
 	}
 
-	public function create() {
+	public function create(): Form
+	{
 		$form = $this->baseFormFactory->create();
 
 		if ($this->translator) {
@@ -66,13 +68,13 @@ class LoginFormFactory implements ILoginFormFactory {
 		return $form;
 	}
 
-	public function process(Form $form) {
-		$values = $form->values;
+	public function process(Form $form, ArrayHash $values)
+	{
 		try {
 			if ($values->remember) {
-				$this->user->setExpiration('14 days', FALSE);
+				$this->user->setExpiration('14 days', false);
 			} else {
-				$this->user->setExpiration('30 minutes', TRUE);
+				$this->user->setExpiration('30 minutes', true);
 			}
 			$this->user->login($values->email, $values->password);
 		} catch (AuthenticationException $e) {

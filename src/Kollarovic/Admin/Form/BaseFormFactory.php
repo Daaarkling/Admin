@@ -1,14 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin\Form;
 
-use Nette\Object;
 use Nette\Forms\IFormRenderer;
 use Nette\Localization\ITranslator;
 use Nette\Application\UI\Form;
 
 
-class BaseFormFactory extends Object implements IBaseFormFactory {
+class BaseFormFactory implements IBaseFormFactory {
 
 	/** @var IFormRenderer */
 	private $formRender;
@@ -17,15 +17,15 @@ class BaseFormFactory extends Object implements IBaseFormFactory {
 	private $translator;
 
 
-	function __construct(IFormRenderer $formRender, ITranslator $translator= NULL){
-		
+	function __construct(IFormRenderer $formRender, ITranslator $translator = null)
+	{
 		$this->translator = $translator;
 		$this->formRender = $formRender;
 	}
 
 
-	public function create() {
-		
+	public function create(): Form
+	{
 		$form = new Form;
 		$form->setTranslator($this->translator);
 		$form->setRenderer($this->formRender);
@@ -33,11 +33,13 @@ class BaseFormFactory extends Object implements IBaseFormFactory {
 	}
 	
 	
-	public function getFormRender() {
+	public function getFormRender(): IFormRenderer
+	{
 		return $this->formRender;
 	}
 
-	public function getTranslator() {
+	public function getTranslator(): ITranslator
+	{
 		return $this->translator;
 	}
 

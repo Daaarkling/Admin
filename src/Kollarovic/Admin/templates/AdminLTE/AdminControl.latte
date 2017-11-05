@@ -8,12 +8,7 @@
 		{else}
 			<title>{control navigation:title} - {_$adminName}</title>
 		{/if}
-		
-		<!-- BEGIN PACE PLUGIN FILES -->
-		<script src="{$basePath}/js/pace.min.js"></script>
-		<link href="{$basePath}/css/pace.css" rel="stylesheet">
-		<!-- END PACE PLUGIN FILES -->
-		
+
 		{control css}
 		<link rel="shortcut icon" href="{$basePath}/favicon.ico">
 		<!--[if lt IE 9]>
@@ -40,7 +35,7 @@
 									<i class="caret"></i>
 								</a>
 								<ul class="dropdown-menu">
-									<li class="user-header">
+									<li n:if="$userImage" class="user-header">
 										<img src="{$userImage}" class="img-circle" alt="User Image"/>
 										<p>
 											{$userName}
@@ -75,7 +70,7 @@
 						{/form}
 					{/if}
 					{snippet menu}
-						{block menu}{control navigation:menu class => 'sidebar-menu', subclass => 'treeview-menu', openClass => 'active', open => TRUE, ajax => $ajax}{/block}
+						{block menu}{control navigation:menu class => 'sidebar-menu', subclass => 'treeview-menu', openClass => 'active', open => true, ajax => $ajax}{/block}
 					{/snippet}
 				</section>
 			</aside>
@@ -96,7 +91,7 @@
 				</section>
 			</div>
 			<footer class="main-footer" n:block="footer">
-				{_$footer|noescape}
+				{$footer}
 			</footer>
 		</div>
 		{block scripts}

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin;
 
@@ -12,12 +13,12 @@ interface ILoaderFactory
 	/**
 	 * @return CssLoader
 	 */
-	function createCssLoader();
+	function createCssLoader(): CssLoader;
 
 
 	/**
 	 * @return JavaScriptLoader
 	 */
-	function createJavaScriptLoader();
+	function createJavaScriptLoader(): JavaScriptLoader;
 
 }

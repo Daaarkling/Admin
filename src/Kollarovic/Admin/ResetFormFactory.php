@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Kollarovic\Admin;
 
-use Nette\Object;
+
 use Nette\Security\User;
-use Nette\Security\AuthenticationException;
 use Kollarovic\Admin\Form\IBaseFormFactory;
 use Nette\Application\UI\Form;
 use Nette\Localization\ITranslator;
@@ -27,10 +27,11 @@ class ResetFormFactory implements IResetFormFactory {
 
 		$this->user = $user;
 		$this->baseFormFactory = $baseFormFactory;
-		$this->translator = $baseFormFactory->translator;
+		$this->translator = $baseFormFactory->getTranslator();
 	}
 
-	public function create() {
+	public function create(): Form
+	{
 		$form = $this->baseFormFactory->create();
 
 		if ($this->translator) {
