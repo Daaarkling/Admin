@@ -14,10 +14,12 @@ class Extension extends Nette\DI\CompilerExtension {
 			'name' => 'Admin',
 			'logo' => null,
 			'skin' => 'red',
+			'backLinkColor' => 'danger',
 			'footer' => '',
 			'profile' => 'Profile',
 			'signout' => 'Sign Out',
 			'search' => 'Search',
+			'back' => 'Back',
 			'ajax' => false,
 			'showSearch' => true,
 			'layout' => 'AdminLTE',
@@ -79,7 +81,9 @@ class Extension extends Nette\DI\CompilerExtension {
 		$builder->addDefinition($this->prefix('adminControlFactory'))
 				->setImplement('Kollarovic\Admin\IAdminControlFactory')
 				->addSetup('setSkin', [$config['skin']])
+				->addSetup('setBackLinkColor', [$config['backLinkColor']])
 				->addSetup('setAdminName', [$config['name']])
+				->addSetup('setBack', [$config['back']])
 				->addSetup('setNavigationName', [$config['navigation']])
 				->addSetup('setFooter', [$config['footer']])
 				->addSetup('setShowSearch', [$config['showSearch']])

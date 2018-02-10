@@ -77,7 +77,7 @@
 
 			<div class="content-wrapper">
 				<section class="content-header" n:snippet="breadcrumb">
-					<h1>{if $pageName}{$pageName}{else}{control navigation:title}{/if}</h1>
+					<h1>{control navigation:backLink back => $back, backLinkColor => $backLinkColor}{if $pageName}{$pageName}{else}{control navigation:title}{/if}</h1>
 					{block breadcrumb}{control navigation:breadcrumb ajax => $ajax}{/block}
 				</section>
 				<section class="content">

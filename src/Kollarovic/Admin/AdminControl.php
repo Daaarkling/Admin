@@ -35,12 +35,18 @@ class AdminControl extends Control
 
 	/** @var string */
 	private $skin;
+
+	/** @var string */
+	private $backLinkColor;
 	
 	/** @var string */
 	private $logo;
 
 	/** @var string */
 	private $adminName;
+
+	/** @var string */
+	private $back;
 
 	/** @var string */
 	private $userName;
@@ -104,8 +110,10 @@ class AdminControl extends Control
 		$this->template->setFile($this->getLayout()['templates']['admin']);
 		$this->template->pageTitle = $this->pageTitle;
 		$this->template->skin = $this->skin;
+		$this->template->backLinkColor = $this->backLinkColor;
 		$this->template->profileUrl = $this->profileUrl;
 		$this->template->userName = $this->userName;
+		$this->template->back = $this->back;
 		$this->template->userImage = $this->userImage;
 		$this->template->adminName = $this->adminName;
 		$this->template->pageName = $this->pageName;
@@ -534,5 +542,37 @@ class AdminControl extends Control
 	public function setLayout(array $layout)
 	{
 		$this->layout = $layout;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getBack(): string
+	{
+		return $this->back;
+	}
+
+	/**
+	 * @param string $back
+	 */
+	public function setBack(string $back)
+	{
+		$this->back = $back;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getBackLinkColor(): string
+	{
+		return $this->backLinkColor;
+	}
+
+	/**
+	 * @param string $backLinkColor
+	 */
+	public function setBackLinkColor(string $backLinkColor)
+	{
+		$this->backLinkColor = $backLinkColor;
 	}
 }
