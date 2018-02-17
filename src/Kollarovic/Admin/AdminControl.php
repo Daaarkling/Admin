@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Kollarovic\Admin;
 
 use Kollarovic\Navigation\Item;
-use Kollarovic\Navigation\ItemsFactory;
+use Kollarovic\Navigation\IItemsFactory;
 use Kollarovic\Navigation\NavigationControl;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
@@ -21,7 +21,7 @@ class AdminControl extends Control
 	/** @var array */
 	public $onSearch;
 
-	/** @var ItemsFactory */
+	/** @var IItemsFactory */
 	private $itemsFactory;
 
 	/** @var ILoaderFactory */
@@ -96,7 +96,7 @@ class AdminControl extends Control
 	
 
 
-	function __construct(ItemsFactory $itemsFactory, ILoaderFactory $loaderFactory, User $user)
+	function __construct(IItemsFactory $itemsFactory, ILoaderFactory $loaderFactory, User $user)
 	{
 		parent::__construct();
 		$this->itemsFactory = $itemsFactory;
@@ -187,23 +187,23 @@ class AdminControl extends Control
 	}
 
 
-	private function getRootItem(): Item
+	public function getRootItem(): Item
 	{
 		return $this->itemsFactory->create($this->navigationName);
 	}
 
 	/**
-	 * @return ItemsFactory
+	 * @return IItemsFactory
 	 */
-	public function getItemsFactory(): ItemsFactory
+	public function getItemsFactory(): IItemsFactory
 	{
 		return $this->itemsFactory;
 	}
 
 	/**
-	 * @param ItemsFactory $itemsFactory
+	 * @param IItemsFactory $itemsFactory
 	 */
-	public function setItemsFactory(ItemsFactory $itemsFactory)
+	public function setItemsFactory(IItemsFactory $itemsFactory)
 	{
 		$this->itemsFactory = $itemsFactory;
 	}

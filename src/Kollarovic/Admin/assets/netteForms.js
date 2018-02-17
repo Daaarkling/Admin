@@ -375,14 +375,14 @@
 			val = Nette.isArray(val) ? val : [val];
 			arg = Nette.isArray(arg) ? arg : [arg];
 			loop:
-			for (var i1 = 0, len1 = val.length; i1 < len1; i1++) {
-				for (var i2 = 0, len2 = arg.length; i2 < len2; i2++) {
-					if (toString(val[i1]) === toString(arg[i2])) {
-						continue loop;
+				for (var i1 = 0, len1 = val.length; i1 < len1; i1++) {
+					for (var i2 = 0, len2 = arg.length; i2 < len2; i2++) {
+						if (toString(val[i1]) === toString(arg[i2])) {
+							continue loop;
+						}
 					}
+					return false;
 				}
-				return false;
-			}
 			return true;
 		},
 
@@ -452,6 +452,13 @@
 			} catch (e) {}
 		},
 
+		numeric: function(elem, arg, val) {
+			if (elem.type === 'number' && elem.validity.badInput) {
+				return false;
+			}
+			return (/^[0-9]+$/).test(val);
+		},
+
 		integer: function(elem, arg, val) {
 			if (elem.type === 'number' && elem.validity.badInput) {
 				return false;
@@ -463,8 +470,8 @@
 			if (elem.type === 'number' && elem.validity.badInput) {
 				return false;
 			}
-			val = val.replace(' ', '').replace(',', '.');
-			if ((/^-?[0-9]*[.,]?[0-9]+$/).test(val)) {
+			val = val.replace(/ +/g, '').replace(/,/g, '.');
+			if ((/^-?[0-9]*\.?[0-9]+$/).test(val)) {
 				value.value = val;
 				return true;
 			}
